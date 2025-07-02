@@ -37,6 +37,8 @@ module list
 
 cd "${HOMErrfs}/sorc/MPAS-Model" || exit 1
 make clean CORE=init_atmosphere
+make clean CORE=atmosphere
+
 make -j8 "${compiler_str}" CORE=init_atmosphere PRECISION=single
 make clean CORE=atmosphere
 make -j8 "${compiler_str}" CORE=atmosphere PRECISION=single

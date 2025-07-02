@@ -96,7 +96,8 @@ beginDate=""${CDATEm2:0:4}-${CDATEm2:4:2}-${CDATEm2:6:2}T${CDATEm2:8:2}:00:00Z""
 # generate jedivar.yaml based on how YAML_GEN_METHOD is set
 case ${YAML_GEN_METHOD:-1} in
   1) # from ${PARMrrfs}
-    source "${USHrrfs}"/yaml_from_parm.sh "jedivar"
+    #source "${USHrrfs}"/yaml_from_parm.sh "jedivar"
+    source "${USHrrfs}"/yaml_from_parm_gsibec.sh "jedivar" # change to use gsi_bec
     ;;
   2) # update placeholders in static yaml from gen_jedivar_yaml_nonjcb.sh
     source "${USHrrfs}"/yaml_replace_placeholders.sh
@@ -117,6 +118,25 @@ if [[ ${start_type} == "warm" ]] || [[ ${start_type} == "cold" && ${COLDSTART_CY
   export OMP_NUM_THREADS=1
 
   source prep_step
+
+  # this portion is for gsibec, begin
+  ln -snf "${FIXrrfs}/gsi_bec/berror_stats" ./berror_stats 
+  ln -snf "${FIXrrfs}/gsi_bec/mpas_pave_L${nlevel}.txt" ./mpas_pave.txt 
+  ln -snf "${FIXrrfs}/gsi_bec/fv3_grid_spec.${MESH_NAME}" ./fv3_grid_spec 
+  ln -snf "${FIXrrfs}/gsi_bec/gsiparm_regional.anl.${MESH_NAME}" ./gsiparm_regional.anl
+  ln -snf "${FIXrrfs}/gsi_bec/fv3_akbk" ./fv3_akbk
+  ${cpreq} "${FIXrrfs}/gsi_bec/coupler.res" ./coupler.res 
+  YYYYMMDDHH=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2}")
+  YYYY=${YYYYMMDDHH:0:4}
+  MM=${YYYYMMDDHH:4:2}
+  DD=${YYYYMMDDHH:6:2}
+  HH=${YYYYMMDDHH:8:2}
+  sed -i "s/yyyy/${YYYY}/" coupler.res
+  sed -i "s/mm/${MM}/"     coupler.res
+  sed -i "s/dd/${DD}/"     coupler.res
+  sed -i "s/hh/${HH}/"     coupler.res
+  # this portion is for gsibec, end 
+
   ${cpreq} "${EXECrrfs}"/mpasjedi_variational.x .
   ${MPI_RUN_CMD} ./mpasjedi_variational.x jedivar.yaml log.out
   # check the status

@@ -5,6 +5,7 @@
 if [[ "$1" == "jedivar" ]]; then
   sed -e "s/@analysisDate@/${analysisDate}/" -e "s/@beginDate@/${beginDate}/" \
       -e "s/@HYB_WGT_STATIC@/${HYB_WGT_STATIC}/" -e "s/@HYB_WGT_ENS@/${HYB_WGT_ENS}/" \
+      -e "s/@MPI_X@/${MPI_X}/" -e "s/@MPI_Y@/${MPI_Y}/" \
       "${EXPDIR}/config/jedivar.yaml" > jedivar.yaml
   if [[ "${HYB_WGT_ENS}" == "0" ]] || [[ "${HYB_WGT_ENS}" == "0.0" ]]; then # pure 3DVAR
     sed -i '125,150d' ./jedivar.yaml
