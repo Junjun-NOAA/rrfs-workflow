@@ -96,8 +96,7 @@ done
 
 # run the MPAS model
 source prep_step
-#${cpreq} "${EXECrrfs}"/atmosphere_model.x .
-${cpreq} /gpfs/f6/bil-fire10-oar/world-shared/jjh/rrfsv2/code/EMC/20250528/rrfs-workflow/exec/atmosphere_model.x .
+${cpreq} "${EXECrrfs}"/atmosphere_model.x .
 ${MPI_RUN_CMD} ./atmosphere_model.x 
 export err=$?
 err_chk

@@ -56,8 +56,7 @@ ln -snf "${FIXrrfs}/physics/${PHYSICS_SUITE}/QNWFA_QNIFA_SIGMA_MONTHLY.dat" .
 
 # run init_atmosphere_model
 source prep_step
-#${cpreq} "${EXECrrfs}/init_atmosphere_model.x" .
-${cpreq} /gpfs/f6/bil-fire10-oar/world-shared/jjh/rrfsv2/code/EMC/20250528/rrfs-workflow/exec/init_atmosphere_model.x .
+${cpreq} "${EXECrrfs}/init_atmosphere_model.x" .
 ${MPI_RUN_CMD} ./init_atmosphere_model.x
 export err=$?; err_chk
 if [[ ! -s './init.nc' ]]; then
