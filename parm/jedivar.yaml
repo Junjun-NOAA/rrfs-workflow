@@ -82,8 +82,8 @@ cost function:
             gsi akbk: DataFix/fix/akbk66.nc
             gsi error covariance file: berror_stats
             gsi berror namelist file: gsiparm_regional.anl
-            processor layout x direction: '@MPI_X@'
-            processor layout y direction: '@MPI_Y@'
+            processor layout x direction: "@MPI_X@"
+            processor layout y direction: "@MPI_Y@"
             debugging deep bypass gsi B error: false
             debugging mode: false
         saber outer blocks:
@@ -91,8 +91,8 @@ cost function:
           gsi akbk: DataFix/fix/akbk66.nc
           gsi error covariance file: berror_stats
           gsi berror namelist file: gsiparm_regional.anl
-          processor layout x direction: '@MPI_X@'
-          processor layout y direction: '@MPI_Y@'
+          processor layout x direction: "@MPI_X@"
+          processor layout y direction: "@MPI_Y@"
           debugging deep bypass gsi B error: false
           debugging mode: false
           state variables to inverse:  # Make sure to also re-order the state passed to GSI-B constructor
