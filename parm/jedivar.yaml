@@ -78,48 +78,46 @@ cost function:
     - covariance:
         covariance model: SABER
         saber central block:
-          saber block name: BUMP_NICAS
-          active variables: &ctlvars
-          - air_horizontal_streamfunction
-          - air_horizontal_velocity_potential
-          - air_temperature
-          - water_vapor_mixing_ratio_wrt_moist_air
-          - air_pressure_at_surface
+          saber block name: gsi static covariance
           read:
-            io:
-              data directory: data/static_bec/nicas
-              files prefix: mpas
-            drivers:
-              multivariate strategy: univariate
-              read local nicas: true
+            gsi akbk: DataFix/fix/akbk66.nc
+            gsi error covariance file: berror_stats
+            gsi berror namelist file: gsiparm_regional.anl
+            processor layout x direction: "@MPI_X@"
+            processor layout y direction: "@MPI_Y@"
+            debugging deep bypass gsi B error: false
+            debugging mode: false
         saber outer blocks:
-        - saber block name: StdDev
-          read:
-            model file:
-              filename: data/static_bec/stddev.nc
-              date: *analysisDate
-              stream name: control
-        - saber block name: BUMP_VerticalBalance
-          read:
-            io:
-              data directory: data/static_bec/vbal
-              files prefix: mpas_vbal
-            drivers:
-              read local sampling: true
-              read vertical balance: true
-            vertical balance:
-              vbal:
-              - balanced variable: air_horizontal_velocity_potential
-                unbalanced variable: air_horizontal_streamfunction
-                diagonal regression: true
-              - balanced variable: air_temperature
-                unbalanced variable: air_horizontal_streamfunction
-              - balanced variable: air_pressure_at_surface
-                unbalanced variable: air_horizontal_streamfunction
+        - saber block name: interpolation
+          inner geometry:
+            function space: StructuredColumns
+            custom grid matching gsi:
+              type: rotated_lonlat
+              lats: "@NLAT@"
+              lons: "@NLON@"
+              lat_start: "@LAT_START@"
+              lat_end: "@LAT_END@"
+              lon_start: "@LON_START@"
+              lon_end: "@LON_END@"
+              north_pole_lat: "@NORTH_POLE_LAT@"
+              north_pole_lon: "@NORTH_POLE_LON@"
+            custom partitioner matching gsi:
+              bands: "@MPI_Y@"  # matches GSI partition for 1 or 2 MPI tasks, but too simplistic in general
+            halo: 1
+          forward interpolator:
+            local interpolator type: oops unstructured grid interpolator
+          inverse interpolator:
+            local interpolator type: oops unstructured grid interpolator
+          state variables to inverse:  # Make sure to also re-order the state passed to GSI-B constructor
+          - eastward_wind
+          - northward_wind
+          - air_temperature
+          - air_pressure_at_surface
+          - water_vapor_mixing_ratio_wrt_moist_air
         linear variable change:
           linear variable change name: Control2Analysis
-          input variables: *ctlvars
-          output variables: *incvars
+          input variables: [eastward_wind,northward_wind,air_temperature,relative_humidity,air_pressure_at_surface]
+          output variables: [eastward_wind,northward_wind,air_temperature,water_vapor_mixing_ratio_wrt_moist_air,air_pressure_at_surface]
       weight:
         value: "@HYB_WGT_STATIC@"
     - covariance:

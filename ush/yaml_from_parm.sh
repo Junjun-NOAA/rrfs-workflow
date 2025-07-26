@@ -5,11 +5,16 @@
 if [[ "$1" == "jedivar" ]]; then
   sed -e "s/@analysisDate@/${analysisDate}/" -e "s/@beginDate@/${beginDate}/" \
       -e "s/@HYB_WGT_STATIC@/${HYB_WGT_STATIC}/" -e "s/@HYB_WGT_ENS@/${HYB_WGT_ENS}/" \
+      -e "s/@MPI_X@/${MPI_X}/" -e "s/@MPI_Y@/${MPI_Y}/" \
+      -e "s/@NLAT@/${NLAT}/" -e "s/@NLON@/${NLON}/" \
+      -e "s/@LAT_START@/${LAT_START}/" -e "s/@LAT_END@/${LAT_END}/" \
+      -e "s/@LON_START@/${LON_START}/" -e "s/@LON_END@/${LON_END}/" \
+      -e "s/@NORTH_POLE_LAT@/${NORTH_POLE_LAT}/" -e "s/@NORTH_POLE_LON@/${NORTH_POLE_LON}/" \
       "${EXPDIR}/config/jedivar.yaml" > jedivar.yaml
   if [[ "${HYB_WGT_ENS}" == "0" ]] || [[ "${HYB_WGT_ENS}" == "0.0" ]]; then # pure 3DVAR
-    sed -i '125,150d' ./jedivar.yaml
+    sed -i '123,148d' ./jedivar.yaml
   elif [[ "${HYB_WGT_STATIC}" == "0" ]] || [[ "${HYB_WGT_STATIC}" == "0.0" ]] ; then # pure 3DEnVar
-    sed -i '78,124d' ./jedivar.yaml
+    sed -i '78,122d' ./jedivar.yaml
   fi
   if [[ "${start_type}" == "cold" ]]; then
       sed -i '7s/mpasin/ana/' jedivar.yaml
