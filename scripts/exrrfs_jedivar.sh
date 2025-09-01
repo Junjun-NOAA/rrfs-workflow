@@ -112,6 +112,23 @@ if [[ ${start_type} == "warm" ]] || [[ ${start_type} == "cold" && ${COLDSTART_CY
   export OMP_NUM_THREADS=1
 
   source prep_step
+
+  # this portion is for gsibec, begin
+  if [[ ${STATIC_BEC_MODEL} == "GSIBEC" ]]; then
+    ln -snf "${FIXrrfs}/gsi_bec/berror_stats" ./berror_stats
+    ln -snf "${FIXrrfs}/gsi_bec/mpas_pave_L${nlevel}.txt" ./mpas_pave.txt
+    ln -snf "${FIXrrfs}/gsi_bec/fv3_grid_spec.${MESH_NAME}" ./fv3_grid_spec
+    ln -snf "${FIXrrfs}/gsi_bec/gsiparm_regional.anl.${MESH_NAME}" ./gsiparm_regional.anl
+    #ln -snf "${FIXrrfs}/gsi_bec/fv3_akbk" ./fv3_akbk
+    ${cpreq} "${FIXrrfs}/gsi_bec/coupler.res" ./coupler.res
+    YYYYMMDDHH=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2}")
+    YYYY=${YYYYMMDDHH:0:4}
+    MM=${YYYYMMDDHH:4:2}
+    DD=${YYYYMMDDHH:6:2}
+    HH=${YYYYMMDDHH:8:2}
+    sed -i -e "s/yyyy/${YYYY}/" -e "s/mm/${MM}/" -e "s/dd/${DD}/" -e "s/hh/${HH}/" coupler.res
+  fi
+
   ${cpreq} "${EXECrrfs}"/mpasjedi_variational.x .
   ${MPI_RUN_CMD} ./mpasjedi_variational.x jedivar.yaml log.out
   # check the status
