@@ -119,7 +119,7 @@ if [[ ${start_type} == "warm" ]] || [[ ${start_type} == "cold" && ${COLDSTART_CY
     ln -snf "${FIXrrfs}/gsi_bec/mpas_pave_L${nlevel}.txt" ./mpas_pave.txt
     ln -snf "${FIXrrfs}/gsi_bec/fv3_grid_spec.${MESH_NAME}" ./fv3_grid_spec
     ln -snf "${FIXrrfs}/gsi_bec/gsiparm_regional.anl.${MESH_NAME}" ./gsiparm_regional.anl
-    #ln -snf "${FIXrrfs}/gsi_bec/fv3_akbk" ./fv3_akbk
+    ln -snf "${FIXrrfs}/gsi_bec/fv3_akbk" ./fv3_akbk
     ${cpreq} "${FIXrrfs}/gsi_bec/coupler.res" ./coupler.res
     YYYYMMDDHH=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2}")
     YYYY=${YYYYMMDDHH:0:4}
