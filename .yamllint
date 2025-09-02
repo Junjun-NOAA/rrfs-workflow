@@ -11,3 +11,6 @@ rules:
   colons: disable
   line-length:
     max: 50000
+
+ignore: bec_bump.yaml
+
