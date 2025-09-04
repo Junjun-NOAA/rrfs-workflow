@@ -48,18 +48,18 @@ ln -snf "${FIXrrfs}/bumploc/${MESH_NAME}_L${nlevel}_${NTASKS}_401km11levels"  bu
 
 if [[ ${STATIC_BEC_MODEL} == "GSIBEC" ]]; then
   # gsibec
-  ln -snf "${FIXrrfs}/gsi_bec/berror_stats" ./berror_stats
-  ln -snf "${FIXrrfs}/gsi_bec/mpas_pave_L${nlevel}.txt" ./mpas_pave.txt
-  ln -snf "${FIXrrfs}/gsi_bec/fv3_grid_spec.${MESH_NAME}" ./fv3_grid_spec
-  ln -snf "${FIXrrfs}/gsi_bec/gsiparm_regional.anl.${MESH_NAME}" ./gsiparm_regional.anl
-  ln -snf "${FIXrrfs}/gsi_bec/fv3_akbk" ./fv3_akbk
-  ${cpreq} "${FIXrrfs}/gsi_bec/coupler.res" ./coupler.res
+  ln -snf "${FIXrrfs}/gsi_bec/berror_stats" ${DATA}/berror_stats
+  ln -snf "${FIXrrfs}/gsi_bec/mpas_pave_L${nlevel}.txt" ${DATA}/mpas_pave.txt
+  ln -snf "${FIXrrfs}/gsi_bec/fv3_grid_spec.${MESH_NAME}" ${DATA}/fv3_grid_spec
+  ln -snf "${FIXrrfs}/gsi_bec/gsiparm_regional.anl.${MESH_NAME}" ${DATA}/gsiparm_regional.anl
+  ln -snf "${FIXrrfs}/gsi_bec/fv3_akbk" ${DATA}/fv3_akbk
+  ${cpreq} "${FIXrrfs}/gsi_bec/coupler.res" ${DATA}/coupler.res
   YYYYMMDDHH=$(date +%Y%m%d%H -d "${CDATE:0:8} ${CDATE:8:2}")
   YYYY=${YYYYMMDDHH:0:4}
   MM=${YYYYMMDDHH:4:2}
   DD=${YYYYMMDDHH:6:2}
   HH=${YYYYMMDDHH:8:2}
-  sed -i -e "s/yyyy/${YYYY}/" -e "s/mm/${MM}/" -e "s/dd/${DD}/" -e "s/hh/${HH}/" coupler.res
+  sed -i -e "s/yyyy/${YYYY}/" -e "s/mm/${MM}/" -e "s/dd/${DD}/" -e "s/hh/${HH}/" ${DATA}/coupler.res
 else
   # bump bec
   mkdir -p static_bec
